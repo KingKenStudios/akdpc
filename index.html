@@ -266,7 +266,8 @@
                     <!-- Expericence End -->
 
                     <!-- Subscribe Start -->
-                   <section class="wow fadeInUp" data-wow-delay="0.1s">
+                   <!-- EmailJS SDK -->
+<section class="wow fadeInUp" data-wow-delay="0.1s">
     <div class="bg-secondary text-center p-5">
         <h1 class="text-white font-weight-bold">Subscribe My Newsletter</h1>
         <p class="text-white">Subscribe and get my latest article in your inbox</p>
@@ -276,7 +277,6 @@
                 class="form-control bg-dark border-0 w-100 py-3 ps-4 pe-5" 
                 type="email" 
                 id="subscriber-email"
-                name="subscriber_email"
                 placeholder="Your email" 
                 required
             >
@@ -487,11 +487,12 @@
         <!-- Template Javascript -->
 		
 
+
+
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
 <script>
-    // Initialize EmailJS with your Public Key
     emailjs.init("5T7gNAIprFvDzszOj");
 
     document.getElementById('subscribe-form').addEventListener('submit', function(e) {
@@ -502,53 +503,42 @@
         const emailInput = document.getElementById('subscriber-email');
         const subscriberEmail = emailInput.value;
         
-        // Show loading state
         btn.innerHTML = 'Sending...';
         btn.disabled = true;
         
-        // Send to YOU (notification) - template_s19jkn7
+        // Send to you
         const sendToYou = emailjs.send("service_8tz5t8d", "template_s19jkn7", {
             subscriber_email: subscriberEmail,
             subscribe_date: new Date().toLocaleDateString()
         });
         
-        // Send to SUBSCRIBER (auto-reply) - template_6fxli6n
+        // Send to subscriber
         const sendToSubscriber = emailjs.send("service_8tz5t8d", "template_6fxli6n", {
             to_email: subscriberEmail,
             from_name: "Kehinde Dada Akinwumi",
             message: "Thank you for subscribing to Kehinde Dada Akinwumi Newsletter. You will receive my latest articles and updates directly in your inbox."
         });
         
-        // Wait for both emails to send
-        Promise.all([sendToYou, sendToSubscriber]).then(function(responses) {
-            // Success popup
+        Promise.all([sendToYou, sendToSubscriber]).then(function() {
             messageDiv.className = 'alert alert-success mt-3';
-            messageDiv.innerHTML = '✓ Thanks for subscribing! Check your inbox for confirmation.';
+            messageDiv.innerHTML = '✓ Thanks for subscribing! Check your inbox.';
             messageDiv.style.display = 'block';
             
-            // Clear form
             emailInput.value = '';
-            
-            // Reset button
             btn.innerHTML = 'Subscribe';
             btn.disabled = false;
             
-            // Hide message after 5 seconds
             setTimeout(function() {
                 messageDiv.style.display = 'none';
             }, 5000);
             
-        }).catch(function(error) {
-            // Error popup
+        }).catch(function() {
             messageDiv.className = 'alert alert-danger mt-3';
             messageDiv.innerHTML = '✗ Something went wrong. Please try again.';
             messageDiv.style.display = 'block';
             
-            // Reset button
             btn.innerHTML = 'Subscribe';
             btn.disabled = false;
-            
-            console.log('EmailJS Error:', error);
         });
     });
 </script>
