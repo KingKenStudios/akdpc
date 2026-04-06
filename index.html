@@ -489,6 +489,8 @@
 
 
 
+
+
 <!-- EmailJS SDK -->
 <script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
 
@@ -506,13 +508,14 @@
         btn.innerHTML = 'Sending...';
         btn.disabled = true;
         
-        // Send to you
+        // Send to YOU (notification) - matches template variables: name, time, message
         const sendToYou = emailjs.send("service_8tz5t8d", "template_s19jkn7", {
-            subscriber_email: subscriberEmail,
-            subscribe_date: new Date().toLocaleDateString()
+            name: subscriberEmail,
+            time: new Date().toLocaleString(),
+            message: "New newsletter subscriber from website"
         });
         
-        // Send to subscriber
+        // Send to SUBSCRIBER (thank you) - template_6fxli6n
         const sendToSubscriber = emailjs.send("service_8tz5t8d", "template_6fxli6n", {
             to_email: subscriberEmail,
             from_name: "Kehinde Dada Akinwumi",
@@ -532,7 +535,7 @@
                 messageDiv.style.display = 'none';
             }, 5000);
             
-        }).catch(function() {
+        }).catch(function(error) {
             messageDiv.className = 'alert alert-danger mt-3';
             messageDiv.innerHTML = '✗ Something went wrong. Please try again.';
             messageDiv.style.display = 'block';
